@@ -1,5 +1,7 @@
 {
   "name": "Jury-Duty",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

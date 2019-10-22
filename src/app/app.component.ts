@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-
+import * as firebase from 'firebase';
+import { FIREBASE_CONFIG } from './environment';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -10,6 +11,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  loggedIn = false;
   public appPages = [
     {
       title: 'Home',
@@ -17,10 +19,20 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
-    }
+      title: 'Login',
+      url: '/login',
+      icon: 'logo-buffer'
+    },
+    {
+      title: 'Register',
+      url: '/register',
+      icon: 'logo-buffer'
+    },
+    {
+      title: 'Jury',
+      url: '/jury',
+      icon: 'logo-buffer'
+    },
   ];
 
   constructor(
@@ -29,6 +41,7 @@ export class AppComponent {
     private statusBar: StatusBar
   ) {
     this.initializeApp();
+    
   }
 
   initializeApp() {
@@ -36,5 +49,6 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+    firebase.initializeApp(FIREBASE_CONFIG);
   }
 }
