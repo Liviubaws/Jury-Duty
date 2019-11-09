@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Component({
   selector: 'app-admin',
@@ -7,15 +8,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminPage implements OnInit {
 created:boolean;
+extended:boolean;
 contests = [];
 contest;
+juror;
+organiser;
 name:string;
-jurors:number;
-organisers:number;
-jurorCodes = [];
-organiserCodes = [];
-  constructor() { 
+jurors = [];
+organisersArray = [];
+organisers = [];
+organisersNumber:number;
+organisersNames = [];
+jurorsNames = [];
+jurorsNumber:number;
+criterias = [];
+index = 0;
+  constructor(public fdb: AngularFireDatabase) {
+    this.fdb.list("/contests/").valueChanges().subscribe(__contests => {
+      this.contests = __contests;
+    });
+    this.fdb.list("/organisers/").valueChanges().subscribe(__organisers => {
+      this.organisers = __organisers;
+    });
+    this.fdb.list("/jurors/").valueChanges().subscribe(__jurors => {
+      this.jurors = __jurors;
+    });
     this.created = false;
+    this.extended = false;
   }
 
   ngOnInit() {
@@ -24,23 +43,50 @@ organiserCodes = [];
   create() {
     this.created = true; 
   }
-  save(){
-    for(var i = 0; i < this.jurors; i++){
-      var code = this.generateJuryCode();
-      this.jurorCodes.push(code);
+  extend(){
+    this.extended = true;
+    for(var i = 0; i < this.organisersNumber; i++){
+      this.organisersNames[i] = "undefined";
     }
-    for(var i = 0; i < this.organisers; i++){
+    for(var i = 0; i < this.jurorsNumber; i++){
+      this.jurorsNames[i] = "undefined";
+    }
+  }
+  addCriteria(criteria){
+    this.criterias[this.index] = criteria;
+    this.index ++ ;
+  }
+  save(){
+    for(var i = 0; i < this.jurorsNumber; i++){
       var code = this.generateJuryCode();
-      this.organiserCodes.push(code);
+      this.juror = {
+        number: this.jurorsNumber[i],
+        name: this.jurorsNames[i],
+        jurorCode: code
+      }
+      this.jurors.push(this.juror);
+    }
+    for(var i = 0; i < this.organisersNumber; i++){
+      var code = this.generateJuryCode();
+      this.organiser = {
+        number: this.organisersNumber[i],
+        name: this.organisersNames[i],
+        organiserCode: code
+      }
+      this.organisers.push(this.organiser);
     }
     this.contest = {
       name: this.name,
+      jurorsNumber: this.jurorsNumber,
+      organisersNumber: this.organisersNumber,
       jurors: this.jurors,
-      organiserCodes: this.organiserCodes,
-      jurorCodes: this.jurorCodes
+      organisers: this.organisers,
+      criterias: this.criterias
     }
     console.log(this.contest);
-    this.contests.push(this.contest);
+    this.contest.push(this.contest);
+    this.fdb.list("/contests/").push(this.contest);
+    //this.contests.push(this.contest);
     //this.created = false;
   }
   generateJuryCode(){

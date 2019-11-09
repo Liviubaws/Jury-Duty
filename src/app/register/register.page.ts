@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth} from 'angularfire2/auth'
 import { AngularFireDatabase } from 'angularfire2/database';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -12,11 +12,12 @@ export class RegisterPage implements OnInit {
   email:string;
   password:string;
   repassword:string;
-  users = [];
+  admins = [];
   data:string;
-  constructor(private fire: AngularFireAuth, public fdb: AngularFireDatabase, public alertCtrl:AlertController) { 
-    this.fdb.list("/users/").valueChanges().subscribe(__users => {
-      this.users = __users;
+  constructor(private fire: AngularFireAuth, public fdb: AngularFireDatabase, public alertCtrl:AlertController,
+    public navCtrl:NavController) { 
+    this.fdb.list("/admins/").valueChanges().subscribe(__admins => {
+      this.admins = __admins;
     });
   }
   
@@ -49,8 +50,8 @@ export class RegisterPage implements OnInit {
       errors++;
       this.alert("Passwords are different");
     }
-    for(var i = 0; i < this.users.length; i++){
-      if(this.email == this.users[i]){
+    for(var i = 0; i < this.admins.length; i++){
+      if(this.email == this.admins[i]){
         errors++;
         this.alert("That email address is already in use");
         break;
@@ -64,6 +65,7 @@ export class RegisterPage implements OnInit {
         this.data = "";
         this.data = this.data.concat(this.email);
         this.fdb.list("/users/").push(this.data);
+        this.navCtrl.navigateForward('login');
       })
       .catch(error => {
         console.log("Some error");

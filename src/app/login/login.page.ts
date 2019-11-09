@@ -58,6 +58,11 @@ export class LoginPage implements OnInit {
       this.alert("Email or password are wrong");
     }
   }
+
+  goRegister(){
+    this.router.navigate(['/register']);
+  }
+
   jury(){
 
   }

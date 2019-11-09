@@ -11,10 +11,22 @@
   <ion-button *ngIf="created == false" (click)="create()">Create contest</ion-button>
   <div *ngIf="created == true">
     <ion-input placeholder="Name" [(ngModel)]="name"></ion-input>
-    <ion-input placeholder="Number of organisers" [(ngModel)]="organisers"></ion-input>
-    <ion-input placeholder="Number of jurors" [(ngModel)]="jurors"></ion-input>
-    <ion-button (click)="save()">Confirm</ion-button>
+    <ion-input placeholder="Number of organisers" [(ngModel)]="organisersNumber"></ion-input>
+    <ion-input placeholder="Number of jurors" [(ngModel)]="jurorsNumber"></ion-input>
+    <ion-button (click)="extend()">Continue</ion-button>
   </div>
+  <div *ngIf = "extended">
+    <ion-input *ngFor="let organiserName of organisersNames" placeholder="Enter organiser name"></ion-input>
+  </div>
+  <div *ngIf = "extended">
+    <ion-input *ngFor="let jurorName of jurorsNames" placeholder="Enter juror name"></ion-input>
+  </div>
+  
+  <div  *ngFor="let crit of Criterias">
+    <ion-input *ngIf="extended" placeholder="Criteria" [(ngModel)]="criteria"></ion-input>
+  </div>
+  <ion-button *ngIf="extended" (click)="addCriteria()">Add criteria</ion-button>
+<ion-button *ngIf ="extended" (click)="save()">Confirm</ion-button>
   <ul>
       <li *ngFor="let organiserCode of organiserCodes">Organiser {{ organiserCode }}</li>
   </ul>
