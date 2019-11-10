@@ -1,9 +1,47 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>organiser</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-</ion-content>
+    <ion-toolbar>
+      <ion-title>Organiser</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+  Welcome, {{organiser.name}}
+  <br>
+  <ion-button *ngIf="!found" (click)="findContests()">Afiseaza concursul</ion-button>
+  <div *ngIf="found">
+    <ion-button *ngFor="let myContest of myContests" (click)="continueFct()">Editeaza concursul</ion-button>
+  </div>
+  <div *ngIf="continue">
+    <div *ngIf="!doneClicked">
+        <ion-select [(ngModel)]="type" placeholder="Selecteaza tipul concursului">
+            <ion-select-option value="battle">Battle</ion-select-option>
+            <ion-select-option value="sincron">Sincron</ion-select-option>
+            <ion-select-option value="asincron">Asincron</ion-select-option>
+        </ion-select>
+        <ion-input [(ngModel)]="contestantsNumber" placeholder="Introdu numarul de participanti"></ion-input>
+        <ion-input [(ngModel)]="rounds" placeholder="Introdu numarul de runde"></ion-input>
+        <ion-input [(ngModel)]="series" placeholder="Introdu numarul de serii/runda"></ion-input>
+        <ion-input [(ngModel)]="contestantsNumberPerRound" placeholder="Introdu numarul de participanti care participa la o runda"></ion-input>
+        <ion-button (click)="done()">Done</ion-button>
+    </div>
+  </div>
+  <div *ngIf="showTeams">
+    <div *ngFor="let team of teams;let i = index">
+      <ion-input placeholder="Enter team name" [(ngModel)]="teamNames[i]"></ion-input>
+    </div>
+  </div>
+  <ion-button *ngIf="showTeams" (click)="confirmTeams()">Confirm Teams</ion-button>
+  <div *ngIf = "showCriteriasNumber"> 
+    <ion-input [(ngModel)]="criteriasNumber" placeholder="Enter number of criterias"></ion-input>
+    <ion-button *ngIf="!confirm" (click)="numberIntroduced()">Confirm</ion-button>
+  </div>
+  <div *ngIf="showCriterias == true">
+    <div *ngFor="let criteria of criterias;let i = index">
+      <ion-input placeholder="Enter criteria" [(ngModel)]="criteriasName[i]"></ion-input>
+      <ion-input placeholder="Enter criteria minimum value" [(ngModel)]="criteriasMin[i]"></ion-input>
+      <ion-input placeholder="Enter criteria maximum value" [(ngModel)]="criteriasMax[i]"></ion-input>
+    </div>
+  </div>
+  <ion-button *ngIf="showCriterias" (click)="finish()">Confirm criterias</ion-button>
+  </ion-content>
+  

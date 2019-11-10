@@ -15,14 +15,11 @@ juror;
 organiser;
 name:string;
 jurors = [];
-organisersArray = [];
 organisers = [];
 organisersNumber:number;
+jurorsNumber:number;
 organisersNames = [];
 jurorsNames = [];
-jurorsNumber:number;
-criterias = [];
-index = 0;
   constructor(public fdb: AngularFireDatabase) {
     this.fdb.list("/contests/").valueChanges().subscribe(__contests => {
       this.contests = __contests;
@@ -45,51 +42,43 @@ index = 0;
   }
   extend(){
     this.extended = true;
-    for(var i = 0; i < this.organisersNumber; i++){
-      this.organisersNames[i] = "undefined";
-    }
-    for(var i = 0; i < this.jurorsNumber; i++){
-      this.jurorsNames[i] = "undefined";
-    }
-  }
-  addCriteria(criteria){
-    this.criterias[this.index] = criteria;
-    this.index ++ ;
+    this.organisers.length = this.organisersNumber;
+    this.jurors.length = this.jurorsNumber;
+    this.organisersNames.length = this.organisersNumber;
+    this.jurorsNames.length = this.jurorsNumber;
   }
   save(){
     for(var i = 0; i < this.jurorsNumber; i++){
-      var code = this.generateJuryCode();
-      this.juror = {
-        number: this.jurorsNumber[i],
+      var code = this.generateCode();
+      this.jurors[i] = {
+        number: i,
         name: this.jurorsNames[i],
         jurorCode: code
       }
-      this.jurors.push(this.juror);
     }
     for(var i = 0; i < this.organisersNumber; i++){
-      var code = this.generateJuryCode();
-      this.organiser = {
-        number: this.organisersNumber[i],
+      var code = this.generateCode();
+      this.organisers[i] = {
+        number: i,
         name: this.organisersNames[i],
         organiserCode: code
       }
-      this.organisers.push(this.organiser);
     }
+    console.log(this.organisers);
+    console.log(this.jurors);
     this.contest = {
       name: this.name,
       jurorsNumber: this.jurorsNumber,
       organisersNumber: this.organisersNumber,
       jurors: this.jurors,
-      organisers: this.organisers,
-      criterias: this.criterias
+      organisers: this.organisers
     }
     console.log(this.contest);
-    this.contest.push(this.contest);
     this.fdb.list("/contests/").push(this.contest);
-    //this.contests.push(this.contest);
-    //this.created = false;
+    this.contests.push(this.contest);
+    this.created = false;
   }
-  generateJuryCode(){
+  generateCode(){
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
