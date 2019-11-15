@@ -1,37 +1,40 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Admin</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Admin</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ul>
-        <li *ngFor="let contestName of contests.name">{{ contestName }}</li>
-    </ul>
-  <ion-button *ngIf="created == false" (click)="create()">Create contest</ion-button>
-  <div *ngIf="created == true">
-    <ion-input placeholder="Name" [(ngModel)]="name"></ion-input>
-    <ion-input placeholder="Number of organisers" [(ngModel)]="organisersNumber"></ion-input>
-    <ion-input placeholder="Number of jurors" [(ngModel)]="jurorsNumber"></ion-input>
-    <ion-button (click)="extend()">Continue</ion-button>
-  </div>
-  <div *ngIf = "extended">
-    <div *ngFor="let x of organisers;let i = index">
-      <ion-input [(ngModel)]="organisersNames[i]" placeholder="Enter organiser name"></ion-input>
+    <div *ngFor="let contest of contests">
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>{{ contest.name }}</ion-card-title>
+            </ion-card-header>
+            <ion-grid>
+                <ion-row *ngFor="let organiser of contest.organisers">Organiser {{ organiser.name }} {{ organiser.organiserCode }}</ion-row>
+                <ion-row *ngFor="let juror of contest.jurors">Juror {{ juror.name }} {{juror.jurorCode}}</ion-row>
+            </ion-grid>
+            <ion-button (click) ="delete(contest)" color="danger">Delete Contest</ion-button>
+        </ion-card>
     </div>
-  </div>
-  <div *ngIf = "extended">
-    <div *ngFor="let y of jurors; let i = index">
-      <ion-input [(ngModel)]="jurorsNames[i]" placeholder="Enter juror name"></ion-input>
+    <ion-button *ngIf="created == false" (click)="create()">Create contest</ion-button>
+    <div *ngIf="created == true">
+        <ion-input placeholder="New Contest Name" [(ngModel)]="name"></ion-input>
+        <ion-input placeholder="Number of organisers" [(ngModel)]="organisersNumber"></ion-input>
+        <ion-input placeholder="Number of jurors" [(ngModel)]="jurorsNumber"></ion-input>
+        <ion-button (click)="extend()">Continue</ion-button>
     </div>
-  </div>
-  
-<ion-button *ngIf ="extended" (click)="save()">Confirm</ion-button>
-  <ul *ngIf = "created == false">
-      <li *ngFor="let organiser of organisers">Organiser {{ organiser.name }} {{ organiser.organiserCode }}</li>
-  </ul>
-  <ul *ngIf = "created == false">
-      <li *ngFor="let juror of jurors">Juror {{ juror.name }} {{juror.jurorCode}}</li>
-  </ul>
-  
+    <div *ngIf="extended">
+        <div *ngFor="let x of organisers;let i = index">
+            <ion-input [(ngModel)]="organisersNames[i]" placeholder="Enter organiser name"></ion-input>
+        </div>
+    </div>
+    <div *ngIf="extended">
+        <div *ngFor="let y of jurors; let i = index">
+            <ion-input [(ngModel)]="jurorsNames[i]" placeholder="Enter juror name"></ion-input>
+        </div>
+    </div>
+
+    <ion-button *ngIf="extended" (click)="save()">Confirm</ion-button>
+
 </ion-content>

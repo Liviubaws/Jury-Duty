@@ -1,39 +1,59 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login to Jury Duty</ion-title>
+    <ion-title>Jury Duty</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding center text-center>
-  <ion-title>Jury Duty</ion-title>
-  <ion-list>
-    <ion-item>
-      <ion-input placeholder="Email" [(ngModel)]="email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
-    </ion-item>
-  </ion-list>
-  <ion-button (click)="login()" color="success">Log in</ion-button>
-  <ion-button (click)="forgot()" color="primary">Forgot Password?</ion-button>
-  <br>
-  <ion-label>Need an account?</ion-label>
-  <br>
-  <ion-button (click)="goRegister()" color="danger">Register Here</ion-button>
-  <p>Are you an organiser?</p>
-  <p>Ask the admin for your code</p>
-  <ion-list>
-    <ion-item>
-      <ion-input placeholder="Code" [(ngModel)]="organiserCode"></ion-input>
-    </ion-item>
-  </ion-list>
-  <ion-button (click)="organiser()" color="success">GO!</ion-button>
-  <p>Are you a jury member?</p>
-  <p>Ask your organiser for your code</p>
-  <ion-list>
-    <ion-item>
-      <ion-input placeholder="Code" [(ngModel)]="jurorCode"></ion-input>
-    </ion-item>
-  </ion-list>
-  <ion-button (click)="jury()" color="success">GO!</ion-button>
+<ion-content center text-center>
+    <ion-card text-left>
+        <ion-card-header>
+            <ion-card-title>Enter a contest</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <ion-row center>
+                <ion-text color="secondary" center>
+                    <h1>Organize a contest: </h1>
+                </ion-text>
+                <ion-item>
+                    <ion-input placeholder="Organizer Code" [(ngModel)]="organiserCode"></ion-input>
+                </ion-item>
+                <ion-button (click)="organiser()" color="success">GO!</ion-button>
+            </ion-row>
+            
+            <ion-row center>
+                <ion-text color="secondary" center>
+                    <h1>Jury a contest: </h1>
+                </ion-text>
+                <ion-item>
+                    <ion-input placeholder="Juror Code" [(ngModel)]="jurorCode"></ion-input>
+                </ion-item>
+                <ion-button (click)="jury()" color="success">GO!</ion-button>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-card text-center>
+        <ion-card-header>
+            <ion-card-title>Administrator</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list>
+                <ion-item>
+                    <ion-input placeholder="Email" [(ngModel)]="email"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
+                </ion-item>
+
+                <ion-button (click)="login()" color="success">Log in</ion-button>
+                <ion-button (click)="forgot()" color="primary">Forgot Password?</ion-button>
+                <br>
+                <ion-label>Need an account?</ion-label>
+                <br>
+                <ion-button (click)="goRegister()" color="danger">Register Here</ion-button>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
 </ion-content>
