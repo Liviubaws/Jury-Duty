@@ -3,6 +3,7 @@ import { AngularFireAuth} from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AlertController} from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginPage implements OnInit {
   contests = [];
   loggedJuror;
   loggedOrganiser;
-  constructor(private router:Router, private fire: AngularFireAuth, public fdb:AngularFireDatabase, public alertCtrl:AlertController) { 
+  constructor(private router:Router, private fire: AngularFireAuth, public fdb:AngularFireDatabase, public alertCtrl:AlertController, public platform:Platform) { 
     this.fdb.list("/users/").valueChanges().subscribe(__users => {
       this.users = __users;
     });

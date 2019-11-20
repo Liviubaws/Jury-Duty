@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth} from 'angularfire2/auth';
+import { AlertController} from '@ionic/angular';
 @Component({
   selector: 'app-jury',
   templateUrl: './jury.page.html',
@@ -19,7 +21,7 @@ showCriterias: boolean;
 found: boolean;
 confirm: boolean;
 confirmCriterias: boolean;
-  constructor(private route: ActivatedRoute, public fdb:AngularFireDatabase) {
+  constructor(private route: ActivatedRoute, public fdb:AngularFireDatabase, private fire: AngularFireAuth, private alertCtrl: AlertController, private router: Router) {
     this.fdb.list("/contests/").valueChanges().subscribe(__contests => {
       this.contests = __contests;
     });
@@ -45,5 +47,16 @@ confirmCriterias: boolean;
       this.checked[i] = true;
     }
   }
- 
+  logout(){
+    this.alert("You logged you");
+    this.fire.auth.signOut();
+    this.router.navigate(['/login']);
+  }
+  async alert(msg: string) {
+    const alert = await this.alertCtrl.create({
+    message: msg,
+    buttons: ['OK']
+   });
+   await alert.present(); 
+  }
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "642800455668",
+    "firebase_url": "https://jury-duty-dd31d.firebaseio.com",
+    "project_id": "jury-duty-dd31d",
+    "storage_bucket": "jury-duty-dd31d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642800455668:android:08e8d5b20b02f623d6b3a1",
+        "android_client_info": {
+          "package_name": "com.juryduty.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642800455668-ijougd269m0i81k4e7in2ajnimjej3t9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_RtyEHashJgontTCuE1SKwpcSoqZX-rI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642800455668-ijougd269m0i81k4e7in2ajnimjej3t9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

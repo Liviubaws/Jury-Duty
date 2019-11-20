@@ -1,11 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Jury</ion-title>
+    <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 Welcome, {{juror.name}}
 <br>
+<ion-button (click)="logout()">Logout</ion-button> <br>
 Wait for your contest to start ...
 </ion-content>

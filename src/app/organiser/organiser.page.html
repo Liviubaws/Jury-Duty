@@ -1,47 +1,66 @@
 <ion-header>
     <ion-toolbar>
       <ion-title>Organiser</ion-title>
+      <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+       </ion-buttons>
     </ion-toolbar>
   </ion-header>
   
   <ion-content>
   Welcome, {{organiser.name}}
   <br>
+  <ion-button (click)="logout()">Logout</ion-button>
   <ion-button *ngIf="!found" (click)="findContests()">Afiseaza concursul</ion-button>
-  <div *ngIf="found">
-    <ion-button *ngFor="let myContest of myContests" (click)="continueFct()">Editeaza concursul</ion-button>
-  </div>
-  <div *ngIf="continue">
-    <div *ngIf="!doneClicked">
-        <ion-select [(ngModel)]="type" placeholder="Selecteaza tipul concursului">
-            <ion-select-option value="battle">Battle</ion-select-option>
-            <ion-select-option value="sincron">Sincron</ion-select-option>
-            <ion-select-option value="asincron">Asincron</ion-select-option>
-        </ion-select>
-        <ion-input [(ngModel)]="contestantsNumber" placeholder="Introdu numarul de participanti"></ion-input>
-        <ion-input [(ngModel)]="rounds" placeholder="Introdu numarul de runde"></ion-input>
-        <ion-input [(ngModel)]="series" placeholder="Introdu numarul de serii/runda"></ion-input>
-        <ion-input [(ngModel)]="contestantsNumberPerRound" placeholder="Introdu numarul de participanti care participa la o runda"></ion-input>
-        <ion-button (click)="done()">Done</ion-button>
+  <div *ngIf = "!continue">
+    <div *ngIf="found">
+      <ion-button *ngFor="let myContest of myContests" (click)="continueFct()">Editeaza concursul {{myContest.name}}</ion-button>
     </div>
   </div>
-  <div *ngIf="showTeams">
-    <div *ngFor="let team of teams;let i = index">
-      <ion-input placeholder="Enter team name" [(ngModel)]="teamNames[i]"></ion-input>
+    <div *ngIf="continue">
+      <div *ngIf="!doneClicked">
+          <ion-select [(ngModel)]="type" placeholder="Selecteaza tipul concursului">
+              <ion-select-option value="battle">Battle</ion-select-option>
+              <ion-select-option value="sincron">Sincron</ion-select-option>
+              <ion-select-option value="asincron">Asincron</ion-select-option>
+          </ion-select>
+          <ion-input [(ngModel)]="contestantsNumber" placeholder="Introdu numarul de participanti"></ion-input>
+          <ion-input [(ngModel)]="rounds" placeholder="Introdu numarul de runde"></ion-input>
+          <ion-input [(ngModel)]="series" placeholder="Introdu numarul de serii/runda"></ion-input>
+          <ion-input [(ngModel)]="contestantsNumberPerRound" placeholder="Introdu numarul de participanti care participa la o runda"></ion-input>
+          <ion-button (click)="done()">Done</ion-button>
+      </div>
     </div>
-  </div>
-  <ion-button *ngIf="showTeams" (click)="confirmTeams()">Confirm Teams</ion-button>
-  <div *ngIf = "showCriteriasNumber"> 
-    <ion-input [(ngModel)]="criteriasNumber" placeholder="Enter number of criterias"></ion-input>
-    <ion-button *ngIf="!confirm" (click)="numberIntroduced()">Confirm</ion-button>
-  </div>
-  <div *ngIf="showCriterias == true">
-    <div *ngFor="let criteria of criterias;let i = index">
-      <ion-input placeholder="Enter criteria" [(ngModel)]="criteriasName[i]"></ion-input>
-      <ion-input placeholder="Enter criteria minimum value" [(ngModel)]="criteriasMin[i]"></ion-input>
-      <ion-input placeholder="Enter criteria maximum value" [(ngModel)]="criteriasMax[i]"></ion-input>
+    <div *ngIf="showTeams">
+      <div *ngFor="let team of teams;let i = index">
+        <ion-input placeholder="Enter team name" [(ngModel)]="teamNames[i]"></ion-input>
+      </div>
     </div>
+    <ion-button *ngIf="showTeams" (click)="confirmTeams()">Confirm Teams</ion-button>
+    <div *ngIf = "showCriteriasNumber"> 
+      <ion-input [(ngModel)]="criteriasNumber" placeholder="Enter number of criterias"></ion-input>
+      <ion-button *ngIf="!confirm" (click)="numberIntroduced()">Confirm</ion-button>
+    </div>
+    <div *ngIf="showCriterias == true">
+      <div *ngFor="let criteria of criterias;let i = index">
+        <ion-input placeholder="Enter criteria" [(ngModel)]="criteriasName[i]"></ion-input>
+        <ion-input placeholder="Enter criteria minimum value" [(ngModel)]="criteriasMin[i]"></ion-input>
+        <ion-input placeholder="Enter criteria maximum value" [(ngModel)]="criteriasMax[i]"></ion-input>
+      </div>
+      <ion-button *ngIf="showCriterias" (click)="finish()">Confirm criterias</ion-button>
+    </div>
+  <div *ngIf = "finished">
+    <br>
+    You edited contest {{contest.name}} and added the following options:<br>
+    Type: {{contest.type}}<br>
+    Name: {{contest.name}}<br>
+    Number of jurors: {{contest.jurorsNumber}}<br>
+    Number of organisers: {{contest.organisersNumber}}<br>
+    <p *ngFor="let juror of contest.jurors">Jurors: {{juror.number}} {{juror.name}} {{juror.jurorCode}}</p><br>
+    <p *ngFor="let organiser of contest.organisers">Organisers: {{organiser.number}} {{organiser.name}} {{organiser.organiserCode}}</p><br>
+    <p *ngFor="let criteria of criterias">Criterias: {{criteria.name}} {{criteria.min}} {{criteria.max}}</p><br>
+    <p *ngFor="let option of options">Options: {{option.type}} {{option.contestantsNumber}} {{option.contestantsNumberPerRound}} {{option.rounds}} {{option.series}}</p><br>
+    Teams: {{teams}}<br>
   </div>
-  <ion-button *ngIf="showCriterias" (click)="finish()">Confirm criterias</ion-button>
-  </ion-content>
+</ion-content>
   
