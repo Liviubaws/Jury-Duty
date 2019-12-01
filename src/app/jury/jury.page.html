@@ -16,12 +16,15 @@ Welcome, {{juror.name}}
   <div *ngIf = "!started">
     Wait for your contest to start ...
   </div>
-  <div *ngIf = "started">
-    {{contest.name}} started!
-    Time until voting starts: {{maxTime}} 
-    <ion-button (click)="jury()">Start Jury Duty</ion-button>
+  <div *ngIf = "started && !ended" >
+    {{name}} started!
+    
+    <ion-button *ngIf="!juryClicked" (click)="jury()">Start Jury Duty</ion-button><br>
+    Series {{currentSeries}}, Round {{currentRound}}<br>
+    Time until voting starts: {{roundTime}} <br>
     <div *ngIf = "!disableInput">
-        <ion-input *ngFor="let team of contest.teams" placeholder="Enter note for {{team}}"></ion-input>
+        <ion-input *ngFor="let team of teams; let i = index" placeholder="Enter note for {{team}}" [(ngModel)]="myGrades[i]"></ion-input>
+        <ion-button (click)="vote()">Vote</ion-button>
     </div>
     
   </div>

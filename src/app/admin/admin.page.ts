@@ -5,9 +5,9 @@ import { AngularFireAuth} from 'angularfire2/auth';
 import { Router} from '@angular/router';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.page.html',
-  styleUrls: ['./admin.page.scss'],
+    selector: 'app-admin',
+    templateUrl: './admin.page.html',
+    styleUrls: ['./admin.page.scss'],
 })
 export class AdminPage implements OnInit {
 created:boolean;
@@ -52,7 +52,7 @@ myContests = [];
     this.editClicked = false;
   }
 
-  ngOnInit() {
+    ngOnInit() {
 
   }
   async alert(msg: string) {

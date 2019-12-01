@@ -4,7 +4,6 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth} from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { AlertController} from '@ionic/angular';
-import { WriteTreeCompleteChildSource } from '@firebase/database/dist/esm/src/core/view/CompleteChildSource';
 
 @Component({
   selector: 'app-organiser',
@@ -17,7 +16,6 @@ export class OrganiserPage implements OnInit {
   contest;
   type;
   roundTime;
-  currentRound;
   criteriasNumber;
   options;
   admin;
@@ -47,6 +45,7 @@ export class OrganiserPage implements OnInit {
   started: boolean;
   disableInput: boolean;
   showResuls: boolean;
+  currentSeries;
   timer;
     constructor(private route: ActivatedRoute, public fdb:AngularFireDatabase, private fire: AngularFireAuth, public router: Router, private alertCtrl: AlertController) {
       this.fdb.list("/contests/").valueChanges().subscribe(__contests => {
@@ -65,7 +64,7 @@ export class OrganiserPage implements OnInit {
       this.showCriteriasNumber = false;
       this.complete = false;
       this.started = false;
-      this.currentRound = 0;
+      this.currentSeries = 0;
       this.roundTime = 0;
     }
 
@@ -105,21 +104,30 @@ export class OrganiserPage implements OnInit {
         alert("Please select a type for your contest");
         errors++;
       }
-      if(this.contestantsNumber == null || this.contestantsNumber == 0){
-        alert("Please enter contestants number");
-        errors++;
-      }
-      if(this.contestantsNumberPerRound == null || this.contestantsNumberPerRound == 0){
-        alert("Please enter contestants number per round");
+      if(this.contestantsNumber == null || this.contestantsNumber == 0 || this.contestantsNumber % 2 != 0){
+        alert("Please enter a contestants number that is dividable by 2");
         errors++;
       }
       if(this.rounds == null || this.rounds == 0){
         alert("Please enter number of rounds");
         errors++;
       }
-      if(this.series == null || this.series == 0){
-        alert("Please enter number of series");
-        errors++;
+      if(this.type != "battle") {
+        if(this.contestantsNumberPerRound == null || this.contestantsNumberPerRound == 0){
+          alert("Please enter contestants number per round");
+          errors++;
+        }
+        if(this.contestantsNumber % this.contestantsNumberPerRound != 0){
+          alert("Please make sure you enter good numbers");
+          errors++;
+        }
+        else{
+          this.series = this.contestantsNumber/this.contestantsNumberPerRound;
+        }
+      }
+      else{
+        this.contestantsNumberPerRound = 2;
+        this.series = Math.log2(this.contestantsNumber);
       }
       if(errors == 0){
         this.options = {
@@ -285,10 +293,10 @@ export class OrganiserPage implements OnInit {
       }
       this.fdb.list("/contests/").push(this.contest);
     }
-    startRound(){
+    startSeries(){
       this.showResuls = true;
-      if(this.currentRound < this.contest.options.rounds + 1){
-        this.currentRound ++;
+      if(this.currentSeries <= this.contest.options.series){
+        this.currentSeries ++;
       }
       this.fdb.list("/contests/").remove(this.contest.$key);
       this.contest = {
@@ -303,9 +311,18 @@ export class OrganiserPage implements OnInit {
         teams: this.contest.teams,
         complete: true,
         started: this.started,
-        currentRound: this.currentRound,
+        currentSeries: this.currentSeries,
         roundTime: this.roundTime
       }
       this.fdb.list("/contests/").push(this.contest);
+    }
+    startRound(){
+
+    }
+    getRoundVotes(){
+
+    }
+    getSeriesVotes(){
+      
     }
   }

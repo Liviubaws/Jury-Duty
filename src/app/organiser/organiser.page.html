@@ -29,10 +29,12 @@
               <ion-select-option value="sincron">Sincron</ion-select-option>
               <ion-select-option value="asincron">Asincron</ion-select-option>
           </ion-select>
-          <ion-input [(ngModel)]="contestantsNumber" placeholder="Introdu numarul de participanti"></ion-input>
-          <ion-input [(ngModel)]="rounds" placeholder="Introdu numarul de runde"></ion-input>
-          <ion-input [(ngModel)]="series" placeholder="Introdu numarul de serii/runda"></ion-input>
-          <ion-input [(ngModel)]="contestantsNumberPerRound" placeholder="Introdu numarul de participanti care participa la o runda"></ion-input>
+          <div *ngIf="type!=battle">
+            <ion-input [(ngModel)]="contestantsNumber" placeholder="Introdu numarul de participanti"></ion-input>
+            <ion-input [(ngModel)]="rounds" placeholder="Introdu numarul de runde"></ion-input>
+            <!--<ion-input [(ngModel)]="series" placeholder="Introdu numarul de serii/runda"></ion-input>-->
+            <ion-input [(ngModel)]="contestantsNumberPerRound" placeholder="Introdu numarul de participanti care participa la o runda"></ion-input>
+          </div>
           <ion-button (click)="done()">Done</ion-button>
       </div>
     </div>
@@ -70,6 +72,7 @@
   </div>
   <div *ngIf="started">
     <ion-input placeholder="Enter time for this round" [(ngModel)]="roundTime"></ion-input>
+    <ion-button (click)="startSeries()">Start series {{currentSeries}}</ion-button>
     <ion-button (click)="startRound()">Start round {{currentRound}}</ion-button>
     <div *ngIf="showResults">
       Waiting for results from jurorsNumber
