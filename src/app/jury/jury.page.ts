@@ -10,17 +10,21 @@ import { AlertController} from '@ionic/angular';
 })
 export class JuryPage implements OnInit {
 juror;
-myContests = [];
 contests = [];
 checked = [];
 criteria;
 contest;
 criterias = [];
+rounds;
 criteriasNumber;
+started: boolean;
 showCriterias: boolean;
 found: boolean;
 confirm: boolean;
 confirmCriterias: boolean;
+roundTime;
+timer;
+disableInput: boolean;
   constructor(private route: ActivatedRoute, public fdb:AngularFireDatabase, private fire: AngularFireAuth, private alertCtrl: AlertController, private router: Router) {
     this.fdb.list("/contests/").valueChanges().subscribe(__contests => {
       this.contests = __contests;
@@ -29,6 +33,11 @@ confirmCriterias: boolean;
       this.checked[i] = false;
     }
     this.found = false;
+    this.started = false;
+    this.contest = null;
+    this.disableInput = true;
+    this.rounds = -1;
+    this.roundTime = -1;
   }
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -40,8 +49,17 @@ confirmCriterias: boolean;
     for(var i = 0; i < this.contests.length; i++){
       for(var j = 0; j < this.contests[i].jurors.length; j++){
         if(this.juror.name == this.contests[i].jurors[j].name && this.checked[i] == false){
-          this.contest = this.contests[i];
-          this.myContests.push(this.contests[i]);
+          
+          if(this.contests[i].started == true){
+            this.contest = this.contests[i];
+            this.started = true;
+            this.rounds = this.contests[i].options.rounds;
+            this.roundTime = this.contests[i].maxTime;
+            break;
+          }
+          else{
+            this.started = false;
+          }
         }
       }
       this.checked[i] = true;
@@ -58,5 +76,26 @@ confirmCriterias: boolean;
     buttons: ['OK']
    });
    await alert.present(); 
+  }
+  jury(){
+    this.startTimer();
+    console.log(this.roundTime);
+  }
+  startTimer(){
+    this.timer = setTimeout(x => 
+      {
+          if(this.roundTime <= 0) { }
+          this.roundTime -= 1;
+          console.log(this.roundTime);
+          if(this.roundTime>0){
+            this.disableInput = true;
+            this.startTimer();
+          }
+          
+          else{
+              this.disableInput = false;
+          }
+
+      }, 1000);
   }
 }

@@ -19,6 +19,8 @@ export class LoginPage implements OnInit {
   contests = [];
   loggedJuror;
   loggedOrganiser;
+  forgotClicked: boolean;
+  forgotMail: string;
   constructor(private router:Router, private fire: AngularFireAuth, public fdb:AngularFireDatabase, public alertCtrl:AlertController, public platform:Platform) { 
     this.fdb.list("/users/").valueChanges().subscribe(__users => {
       this.users = __users;
@@ -99,5 +101,17 @@ export class LoginPage implements OnInit {
         this.router.navigate(['/organiser'], navigationExtras) ;
       }
     }
+  }
+  forgot(){
+    this.forgotClicked = true;
+  }
+  reset(){
+    this.fire.auth.sendPasswordResetEmail(this.forgotMail).then(data => {
+      this.alert("Reset password email sent");
+    })
+    .catch(error => {
+      this.alert(error.message);
+    });
+    this.forgotClicked = false;
   }
 }

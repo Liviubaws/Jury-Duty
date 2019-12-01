@@ -14,7 +14,12 @@
   <ion-button *ngIf="!found" (click)="findContests()">Afiseaza concursul</ion-button>
   <div *ngIf = "!continue">
     <div *ngIf="found">
-      <ion-button *ngFor="let myContest of myContests" (click)="continueFct()">Editeaza concursul {{myContest.name}}</ion-button>
+      <div *ngIf="!complete">
+        <ion-button *ngFor="let myContest of myContests" (click)="continueFct()">Editeaza concursul {{myContest.name}}</ion-button>
+      </div>
+      <div *ngIf="complete">
+        <ion-button *ngFor="let myContest of myContests" (click)="startContest()">Start concursul {{myContest.name}}</ion-button>
+      </div>
     </div>
   </div>
     <div *ngIf="continue">
@@ -61,6 +66,14 @@
     <p *ngFor="let criteria of criterias">Criterias: {{criteria.name}} {{criteria.min}} {{criteria.max}}</p><br>
     <p *ngFor="let option of options">Options: {{option.type}} {{option.contestantsNumber}} {{option.contestantsNumberPerRound}} {{option.rounds}} {{option.series}}</p><br>
     Teams: {{teams}}<br>
+    <ion-button (click)="startContest()">Start contest</ion-button>
+  </div>
+  <div *ngIf="started">
+    <ion-input placeholder="Enter time for this round" [(ngModel)]="roundTime"></ion-input>
+    <ion-button (click)="startRound()">Start round {{currentRound}}</ion-button>
+    <div *ngIf="showResults">
+      Waiting for results from jurorsNumber
+    </div>
   </div>
 </ion-content>
   

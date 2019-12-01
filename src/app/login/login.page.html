@@ -17,6 +17,10 @@
     </ion-list>
     <ion-button (click)="login()" color="success">Log in</ion-button>
     <ion-button (click)="forgot()" color="primary">Forgot Password?</ion-button>
+    <div *ngIf="forgotClicked">
+      <ion-input placeholder="Enter your email" [(ngModel)]="forgotMail"></ion-input>
+      <ion-button (click)="reset()">Reset password</ion-button>
+    </div>
     <br>
     <ion-label>Need an account?</ion-label>
     <br>

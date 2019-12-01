@@ -15,7 +15,27 @@
       <ion-button *ngFor="let myContest of myContests" (click)="editContest(myContest)">Editeaza concursul {{myContest.name}}</ion-button>
   </div>
   <div *ngIf="editClicked">
-      <ion-button (click)="finishEdit()">Confirm</ion-button>
+      Admin:<ion-input [(ngModel)]="editedContest.admin"></ion-input>
+      Nume:<ion-input [(ngModel)]="editedContest.name"></ion-input>
+      Numarul de jurati:<ion-input [(ngModel)]="editedContest.jurorsNumber"></ion-input>
+      Numarul de organizatori:<ion-input [(ngModel)]="editedContest.organisersNumber"></ion-input>
+      <div *ngIf="complete">
+        Type:<ion-input [(ngModel)]="editedContest.options.type"></ion-input>
+        Number of contestants:<ion-input [(ngModel)]="editedContest.options.contestantsNumber"></ion-input>
+        Number of rounds:<ion-input [(ngModel)]="editedContest.options.rounds"></ion-input>
+        Number of series:<ion-input [(ngModel)]="editedContest.options.series"></ion-input>
+        Number of contestants/round: <ion-input [(ngModel)]="editedContest.options.contestantsNumberPerRound"></ion-input>
+        <div *ngFor="let juror of editedContest.jurors">
+          <ion-input [(ngModel)]="juror.name"></ion-input>
+        </div>
+        <div *ngFor="let organiser of editedContest.organisers">
+            <ion-input [(ngModel)]="organiser.name"></ion-input>
+        </div>
+        <div *ngFor="let team of editedContest.teams">
+            <ion-input [(ngModel)]="team"></ion-input>
+        </div>
+      </div>
+      <ion-button (click)="finishEdit(editedContest)">Confirm</ion-button>
   </div>
   <div *ngIf = "!done">
     <ion-button *ngIf="created == false" (click)="create()">Create contest</ion-button>

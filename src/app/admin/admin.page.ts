@@ -18,7 +18,10 @@ name:string;
 organisersNumber:number;
 jurorsNumber:number;
 editClicked:boolean;
+complete: boolean;
+myContest;
 contest;
+editedContest;
 juror;
 organiser;
 contests = [];
@@ -28,7 +31,6 @@ organisersNames = [];
 jurorsNames = [];
 checked = [];
 myContests = [];
-edited = [];
 
   constructor(public fdb: AngularFireDatabase, public alertCtrl: AlertController, public fire: AngularFireAuth, private router: Router) {
     this.fdb.list("/contests/").valueChanges().subscribe(__contests => {
@@ -42,7 +44,6 @@ edited = [];
     });
     for(var i = 0; i < 99999 ; i++){
       this.checked[i] = false;
-      this.edited[i] = false;
     }
     this.created = false;
     this.extended = false;
@@ -174,6 +175,9 @@ edited = [];
     for(var i = 0; i < this.contests.length; i++){
       if(this.fire.auth.currentUser.email == this.contests[i].admin && this.checked[i] == false){
         this.found = true;
+        if(this.contests[i].complete == true){
+          this.complete = true;
+        }
         this.myContests.push(this.contests[i]);
       }
       this.checked[i] = true;
@@ -192,16 +196,13 @@ edited = [];
     }
   }
   editContest(myContest){
+    this.editedContest = myContest;
     this.editClicked = true;
-    var index = -1;
-    for(var i = 0; i < this.myContests.length; i++){
-      if(this.myContests[i] == myContest){
-        index = i;
-        this.edited.push(this.myContests[i]);
-      }
-    }
   }
-  finishEdit(){
+  finishEdit(myContest){
+    this.fdb.list("/contests/").remove(this.editedContest.$key);
     this.editClicked = false;
+    this.editedContest = myContest;
+    this.fdb.list("/contests/").push(this.editedContest);
   }
 }

@@ -11,5 +11,19 @@
 Welcome, {{juror.name}}
 <br>
 <ion-button (click)="logout()">Logout</ion-button> <br>
-Wait for your contest to start ...
+<ion-button *ngIf="!found" (click)="findContests()">Afiseaza concursurile</ion-button>
+<div *ngIf="found">
+  <div *ngIf = "!started">
+    Wait for your contest to start ...
+  </div>
+  <div *ngIf = "started">
+    {{contest.name}} started!
+    Time until voting starts: {{maxTime}} 
+    <ion-button (click)="jury()">Start Jury Duty</ion-button>
+    <div *ngIf = "!disableInput">
+        <ion-input *ngFor="let team of contest.teams" placeholder="Enter note for {{team}}"></ion-input>
+    </div>
+    
+  </div>
+</div>
 </ion-content>
