@@ -28,6 +28,7 @@ export class OrganiserPage implements OnInit {
   criteriasName = [];
   criteriasMin = [];
   criteriasMax = [];
+  teamSets = [];
   teams = [];
   contestantsNumber: number;
   rounds: number;
@@ -44,12 +45,22 @@ export class OrganiserPage implements OnInit {
   complete: boolean;
   started: boolean;
   disableInput: boolean;
-  showResuls: boolean;
-  currentSeries;
+  showResults: boolean;
   timer;
+  currentSeries;
+  seriesTeams = [];
+  ended;
+  grades = [];
+  roundGrades = [];
+  teamGrades:number[] = [];
+  seriesStarted: boolean;
+  seriesToShow;
     constructor(private route: ActivatedRoute, public fdb:AngularFireDatabase, private fire: AngularFireAuth, public router: Router, private alertCtrl: AlertController) {
       this.fdb.list("/contests/").valueChanges().subscribe(__contests => {
         this.contests = __contests;
+      });
+      this.fdb.list("/grades/").valueChanges().subscribe(__grades => {
+        this.grades = __grades;
       });
       for(var i = 0; i < 99999 ; i++){
         this.checked[i] = false;
@@ -64,8 +75,12 @@ export class OrganiserPage implements OnInit {
       this.showCriteriasNumber = false;
       this.complete = false;
       this.started = false;
-      this.currentSeries = 0;
+      this.ended = false;
       this.roundTime = 0;
+      this.currentSeries = 1;
+      this.seriesStarted = false;
+      this.showResults = false;
+      this.seriesToShow = 1;
     }
 
     ngOnInit() {
@@ -83,6 +98,7 @@ export class OrganiserPage implements OnInit {
             this.admin = this.contests[i].admin;
             this.contest = this.contests[i];
             this.myContests.push(this.contests[i]);
+            
             if(this.contest.complete == true){
               this.complete = true;
             }
@@ -289,15 +305,18 @@ export class OrganiserPage implements OnInit {
         options: this.contest.options,
         teams: this.contest.teams,
         complete: true,
-        started: this.started
+        started: this.started,
+        ended: this.ended
       }
       this.fdb.list("/contests/").push(this.contest);
     }
     startSeries(){
-      this.showResuls = true;
-      if(this.currentSeries <= this.contest.options.series){
-        this.currentSeries ++;
+      this.seriesStarted = true;
+      this.teamGrades.length = this.contest.teams.length;
+      for(var i = 0 ; i < this.contest.teams.length; i++){
+        this.teamGrades[this.contest.teams[i]] = 0;
       }
+      
       this.fdb.list("/contests/").remove(this.contest.$key);
       this.contest = {
         admin: this.admin,
@@ -311,18 +330,73 @@ export class OrganiserPage implements OnInit {
         teams: this.contest.teams,
         complete: true,
         started: this.started,
+        roundTime: this.roundTime,
         currentSeries: this.currentSeries,
-        roundTime: this.roundTime
+        ended: this.ended
       }
       this.fdb.list("/contests/").push(this.contest);
-    }
-    startRound(){
-
-    }
-    getRoundVotes(){
-
+      
     }
     getSeriesVotes(){
-      
+      this.showResults = true;
+      for(var i = 0 ; i < this.grades.length;i++){
+        for(let team in this.grades[i].grades){
+          this.teamGrades[team] = Number(this.teamGrades[team]) + Number(this.grades[i].grades[team]);
+        }
+      }
+      for(let team in this.teamGrades){
+        this.roundGrades.push(this.teamGrades[team]);
+      }
+      var runde = [];
+      runde.length = this.contest.options.contestantsNumberPerRound;
+      var ind = 0;
+      for(var i = 0 ; i < 4 ; i = i + 2){
+        runde[ind] = this.roundGrades.splice(0, 2);
+        ind++;
+      }
+      var max = [];
+      max.length = this.contest.options.rounds;
+      for(var i = 0 ; i < runde.length; i++){
+        max[i] = Math.max.apply(Math, runde[i]);
+      }
+      for(var i = 0 ; i < this.contest.teams.length;i++){
+        this.teams.pop();
+      }
+      for(var i = 0 ; i < this.grades.length; i++){
+        for(let team in this.grades[i].grades){
+          for(var j = 0 ; j < max.length; j++){
+            if(this.grades[i].grades[team] == max[j]){
+              this.teams.push(team);
+            }
+          }
+        }
+      }
+      if(this.currentSeries <= this.contest.options.series){
+        this.currentSeries ++ ;
+        this.seriesToShow = this.currentSeries - 1 ;
+      }
+      else{
+        this.ended = true;
+        this.alert("Contest ended");
+      }
+      this.fdb.list("/contests/").remove(this.contest.$key);
+      this.contest = {
+        admin: this.admin,
+        name: this.contest.name,
+        jurorsNumber: this.contest.jurorsNumber,
+        organisersNumber: this.contest.organisersNumber,
+        jurors: this.contest.jurors,
+        organisers: this.contest.organisers,
+        criterias: this.contest.criterias,
+        options: this.contest.options,
+        teams: this.teams,
+        complete: true,
+        started: this.started,
+        roundTime: this.roundTime,
+        currentSeries: this.currentSeries,
+        ended: this.ended
+      }
+      this.fdb.list("/contests/").push(this.contest);
+      this.seriesStarted = false;
     }
   }

@@ -23,7 +23,7 @@ Welcome, {{juror.name}}
     Series {{currentSeries}}, Round {{currentRound}}<br>
     Time until voting starts: {{roundTime}} <br>
     <div *ngIf = "!disableInput">
-        <ion-input *ngFor="let team of teams; let i = index" placeholder="Enter note for {{team}}" [(ngModel)]="myGrades[i]"></ion-input>
+        <ion-input *ngFor="let team of competingTeams" placeholder="Enter note for {{team}}" [(ngModel)]="myGrades[team]"></ion-input>
         <ion-button (click)="vote()">Vote</ion-button>
     </div>
     

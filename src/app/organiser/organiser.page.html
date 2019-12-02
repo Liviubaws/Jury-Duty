@@ -72,10 +72,13 @@
   </div>
   <div *ngIf="started">
     <ion-input placeholder="Enter time for this round" [(ngModel)]="roundTime"></ion-input>
-    <ion-button (click)="startSeries()">Start series {{currentSeries}}</ion-button>
-    <ion-button (click)="startRound()">Start round {{currentRound}}</ion-button>
+    <ion-button *ngIf="!seriesStarted" (click)="startSeries()">Start series {{currentSeries}}</ion-button>
+    <ion-button *ngIf="!showResults" (click)="getSeriesVotes()">Get series votes</ion-button>
     <div *ngIf="showResults">
-      Waiting for results from jurorsNumber
+      In series number {{seriesToShow}}, the winners are:
+      <div *ngFor="let team of teams">
+        {{team}}
+      </div>
     </div>
   </div>
 </ion-content>
