@@ -45,6 +45,7 @@
         <ion-input placeholder="Number of organisers" [(ngModel)]="organisersNumber"></ion-input>
         <ion-input placeholder="Number of jurors" [(ngModel)]="jurorsNumber"></ion-input>
         <ion-button *ngIf = "!extended" (click)="extend()">Continue</ion-button>
+        <ion-button *ngIf = "!extended" (click)="cancel()">Cancel</ion-button>
       </div>
     </div>
     <div *ngIf = "extended">
@@ -58,6 +59,7 @@
       </div>
     </div>
     <ion-button *ngIf ="extended" (click)="save()">Confirm</ion-button>
+    <ion-button *ngIf = "extended" (click)="cancel2()">Back</ion-button>
   </div>
   <div *ngIf = "done">
     <br>
@@ -71,6 +73,7 @@
       <ul>
           <li *ngFor="let juror of jurors">Juror {{ juror.name }} has the code {{juror.jurorCode}}</li>
       </ul>
+      <ion-button *ngIf="done" (click)="cancel3()">OK</ion-button>
     <ion-button *ngIf = "done" (click)="refreshVariables()">Create another</ion-button>
   </div> 
 </ion-content>

@@ -44,10 +44,10 @@
       </div>
     </div>
     <ion-button *ngIf="showTeams" (click)="confirmTeams()">Confirm Teams</ion-button>
-    <div *ngIf = "showCriteriasNumber"> 
+    <!--<div *ngIf = "showCriteriasNumber"> 
       <ion-input [(ngModel)]="criteriasNumber" placeholder="Enter number of criterias"></ion-input>
       <ion-button *ngIf="!confirm" (click)="numberIntroduced()">Confirm</ion-button>
-    </div>
+    </div>-->
     <div *ngIf="showCriterias == true">
       <div *ngFor="let criteria of criterias;let i = index">
         <ion-input placeholder="Enter criteria" [(ngModel)]="criteriasName[i]"></ion-input>
@@ -60,25 +60,22 @@
     <br>
     You edited contest {{contest.name}} and added the following options:<br>
     Type: {{contest.type}}<br>
-    Name: {{contest.name}}<br>
-    Number of jurors: {{contest.jurorsNumber}}<br>
-    Number of organisers: {{contest.organisersNumber}}<br>
-    <p *ngFor="let juror of contest.jurors">Jurors: {{juror.number}} {{juror.name}} {{juror.jurorCode}}</p><br>
-    <p *ngFor="let organiser of contest.organisers">Organisers: {{organiser.number}} {{organiser.name}} {{organiser.organiserCode}}</p><br>
     <p *ngFor="let criteria of criterias">Criterias: {{criteria.name}} {{criteria.min}} {{criteria.max}}</p><br>
     <p *ngFor="let option of options">Options: {{option.type}} {{option.contestantsNumber}} {{option.contestantsNumberPerRound}} {{option.rounds}} {{option.series}}</p><br>
     Teams: {{teams}}<br>
+    <ion-button (click)="ok2()">Ok</ion-button>
     <ion-button (click)="startContest()">Start contest</ion-button>
   </div>
   <div *ngIf="started">
-    <ion-input placeholder="Enter time for this round" [(ngModel)]="roundTime"></ion-input>
+    <ion-input *ngIf = "!seriesStarted" placeholder="Enter time for this round" [(ngModel)]="roundTime"></ion-input>
     <ion-button *ngIf="!seriesStarted" (click)="startSeries()">Start series {{currentSeries}}</ion-button>
-    <ion-button *ngIf="!showResults" (click)="getSeriesVotes()">Get series votes</ion-button>
+    <ion-button *ngIf="!showResults && seriesStarted" (click)="getSeriesVotes()">Get series votes</ion-button>
     <div *ngIf="showResults">
       In series number {{seriesToShow}}, the winners are:
       <div *ngFor="let team of teams">
         {{team}}
       </div>
+      <ion-button (click)="ok()">Ok</ion-button>
     </div>
   </div>
 </ion-content>

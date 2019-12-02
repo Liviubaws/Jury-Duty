@@ -169,7 +169,7 @@ counter;
       /*if(this.currentSeries < this.series){
         this.currentSeries++;
         this.currentRound = 1;
-        while(this.counter < this.contest.options.contestantsNumberPerRound*this.currentRound){
+        while(this.counter < this.contest.options.contestantsNumberPerRound*this.currentSeries){
           this.competingTeams.push(this.contest.teams[this.counter]);
           this.counter++;
         }

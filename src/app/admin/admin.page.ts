@@ -65,6 +65,9 @@ myContests = [];
   create() {
     this.created = true; 
   }
+  cancel(){
+    this.created = false;
+  }
   extend(){
     var errors = 0;
     if(this.name.length == 0){
@@ -86,6 +89,9 @@ myContests = [];
       this.organisersNames.length = this.organisersNumber;
       this.jurorsNames.length = this.jurorsNumber;
     }
+  }
+  cancel2(){
+    this.extended = false;
   }
   save(){
     var errors = 0;
@@ -144,6 +150,11 @@ myContests = [];
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+  }
+  cancel3(){
+    this.done = false;
+    this.extended = false;
+    this.created = false;
   }
   refreshVariables(){
     this.created = false;
@@ -204,5 +215,6 @@ myContests = [];
     this.editClicked = false;
     this.editedContest = myContest;
     this.fdb.list("/contests/").push(this.editedContest);
+    this.editClicked = false;
   }
 }

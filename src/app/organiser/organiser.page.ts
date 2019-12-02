@@ -76,7 +76,6 @@ export class OrganiserPage implements OnInit {
       this.complete = false;
       this.started = false;
       this.ended = false;
-      this.roundTime = 0;
       this.currentSeries = 1;
       this.seriesStarted = false;
       this.showResults = false;
@@ -88,7 +87,12 @@ export class OrganiserPage implements OnInit {
         this.organiser = JSON.parse(params["loggedOrganiser"]);
       });
     }
-
+    ok(){
+      this.showResults = false;
+    }
+    ok2(){
+      this.finished = false;
+    }
     findContests(){ 
       this.refreshVariables();
       for(var i = 0; i < this.contests.length; i++){
@@ -176,11 +180,14 @@ export class OrganiserPage implements OnInit {
       }
       if(errors == 0){
         this.showTeams = false;
+        this.showCriterias = true;
         this.showCriteriasNumber = true;
+        this.numberIntroduced();
       }
     }
 
     numberIntroduced(){
+      this.criteriasNumber = 1;
       if(this.criteriasNumber == 0 || this.criteriasNumber == null){
         alert("Please insert number of criterias");
       }
