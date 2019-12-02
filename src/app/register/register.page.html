@@ -1,24 +1,22 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Register</ion-title>
-    <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
-     </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content padding center text-center>
-  <ion-title>Register</ion-title>
-<ion-list>
-  <ion-item>
-    <ion-input placeholder="Email" [(ngModel)]="email"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input placeholder="Password" [(ngModel)]="password" type="password"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input placeholder="Confirm password" [(ngModel)]="repassword" type="password"></ion-input>
-  </ion-item>
-</ion-list>
-<ion-button (click)="register()">Register</ion-button>
-</ion-content>
+    <ion-toolbar>
+      <ion-title>Register</ion-title>
+      <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+       </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding text-center>
+    <br><br><br>
+    <ion-item class="iitem">
+      <ion-input placeholder="Email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-item class="iitem">
+      <ion-input placeholder="Password" [(ngModel)]="password" type="password"></ion-input>
+    </ion-item>
+    <ion-item class="iitem">
+      <ion-input placeholder="Confirm password" [(ngModel)]="repassword" type="password"></ion-input>
+    </ion-item>
+  <ion-button class="ibutton" (click)="register()"><ion-icon name="checkmark-circle-outline"></ion-icon>Register</ion-button>
+  </ion-content>

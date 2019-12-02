@@ -17,9 +17,8 @@ Welcome, {{juror.name}}
     Wait for your contest to start ...
   </div>
   <div *ngIf = "started && !ended" >
+    <ion-button *ngIf="!juryClicked" (click)="jury()">Start Jury Duty</ion-button>
     {{name}} started!
-    
-    <ion-button *ngIf="!juryClicked" (click)="jury()">Start Jury Duty</ion-button><br>
     <div *ngIf="!hide">
     Series {{currentSeries}}, Round {{currentRound}}<br>
     Time until voting starts: {{roundTime}} <br>

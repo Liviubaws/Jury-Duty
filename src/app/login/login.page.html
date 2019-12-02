@@ -1,47 +1,46 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Jury Duty</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content padding center text-center>
-  <ion-title>Jury Duty</ion-title>
-  <div *ngIf="!platform.is('ios') && !platform.is('android')">
-    <ion-list>
-      <ion-item>
-        <ion-input placeholder="Email" [(ngModel)]="email"></ion-input>
+    <ion-toolbar>
+      <ion-title>Jury Duty</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding text-center>
+    <div *ngIf="!platform.is('ios') && !platform.is('android')">
+      <br><br><br>
+      <ion-item class="iitem">
+        <ion-input placeholder="Email" [(ngModel)]="email"><ion-icon name="person"></ion-icon></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
+  
+      <ion-item class="iitem">
+        <ion-input placeholder="Password" type="password" [(ngModel)]="password"><ion-icon name="lock"></ion-icon></ion-input>
+      </ion-item><br>
+      
+      <ion-text class="register" (click)="goRegister()">Register Here</ion-text>
+      <ion-text class="forgot" (click)="forgot()">Forgot Password?</ion-text><br><br>
+      
+      <ion-button class="ibutton" (click)="login()" color="success">Login</ion-button>
+      
+      <div *ngIf="forgotClicked">
+        <ion-item class="forgot_item">
+            <ion-input placeholder="Enter your email" [(ngModel)]="forgotMail"></ion-input>
+            <ion-button (click)="reset()">Reset password</ion-button>
+        </ion-item>
+      </div><br>
+      
+      <p>Are you an organiser? Ask the admin for your code.</p>
+      <ion-item class="code">
+        <ion-input placeholder="Code" [(ngModel)]="organiserCode"><ion-icon name="code-working"></ion-icon></ion-input>
+        <ion-button (click)="organiser()" color="primary">GO</ion-button>
       </ion-item>
-    </ion-list>
-    <ion-button (click)="login()" color="success">Log in</ion-button>
-    <ion-button (click)="forgot()" color="primary">Forgot Password?</ion-button>
-    <div *ngIf="forgotClicked">
-      <ion-input placeholder="Enter your email" [(ngModel)]="forgotMail"></ion-input>
-      <ion-button (click)="reset()">Reset password</ion-button>
+      
     </div>
-    <br>
-    <ion-label>Need an account?</ion-label>
-    <br>
-    <ion-button (click)="goRegister()" color="danger">Register Here</ion-button>
-    <p>Are you an organiser?</p>
-    <p>Ask the admin for your code</p>
-    <ion-list>
-      <ion-item>
-        <ion-input placeholder="Code" [(ngModel)]="organiserCode"></ion-input>
-      </ion-item>
-    </ion-list>
-    <ion-button (click)="organiser()" color="success">GO!</ion-button>
-  </div>
-  <div *ngIf="platform.is('ios') || platform.is('android')">
-    <p>Are you a jury member?</p>
-    <p>Ask your organiser for your code</p>
-    <ion-list>
-      <ion-item>
-        <ion-input placeholder="Code" [(ngModel)]="jurorCode"></ion-input>
-      </ion-item>
-    </ion-list>
-    <ion-button (click)="jury()" color="success">GO!</ion-button>
-  </div>
-</ion-content>
+    <div *ngIf="platform.is('ios') || platform.is('android')">
+      <p>Are you a jury member?</p>
+      <p>Ask your organiser for your code.</p>
+      <ion-item class="code_phone">
+        <ion-input placeholder="Code" [(ngModel)]="jurorCode"><ion-icon name="code-working"></ion-icon></ion-input>
+        <ion-button (click)="jury()" color="primary">GO</ion-button>
+      </ion-item>   
+    </div>
+  </ion-content>
+  
