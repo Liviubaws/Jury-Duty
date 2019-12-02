@@ -40,6 +40,7 @@ competed = [];
 ended: boolean;
 contest;
 counter;
+hide:boolean;
   constructor(private route: ActivatedRoute, public fdb:AngularFireDatabase, private fire: AngularFireAuth, private alertCtrl: AlertController, private router: Router) {
     this.fdb.list("/contests/").valueChanges().subscribe(__contests => {
       this.contests = __contests;
@@ -63,6 +64,7 @@ counter;
     this.currentSeries = 1;
     this.ended = false;
     this.counter = 0;
+    this.hide = false;
   }
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -164,6 +166,7 @@ counter;
       this.startTimer();
     }
     else{
+      this.hide = true;
       //Ia [cumva] echipele care au trecut mai departe din organiser
       //Same shit for alea -> DONE !!
       /*if(this.currentSeries < this.series){
