@@ -20,11 +20,13 @@ Welcome, {{juror.name}}
     {{name}} started!
     
     <ion-button *ngIf="!juryClicked" (click)="jury()">Start Jury Duty</ion-button><br>
+    <div *ngIf="!hide">
     Series {{currentSeries}}, Round {{currentRound}}<br>
     Time until voting starts: {{roundTime}} <br>
+    </div>
     <div *ngIf = "!disableInput">
         <ion-input *ngFor="let team of competingTeams" placeholder="Enter note for {{team}}" [(ngModel)]="myGrades[team]"></ion-input>
-        <ion-button (click)="vote()">Vote</ion-button>
+        <ion-button *ngIf="!hide" (click)="vote()">Vote</ion-button>
     </div>
     
   </div>
